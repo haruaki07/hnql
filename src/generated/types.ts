@@ -62,9 +62,9 @@ export type User = {
   about?: Maybe<Scalars['String']['output']>;
   created: Scalars['Timestamp']['output'];
   email?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   karma: Scalars['Int']['output'];
-  submissions: Array<Item>;
+  submissions?: Maybe<Array<Item>>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -239,9 +239,9 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
   about?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   created?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   karma?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  submissions?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
+  submissions?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -281,6 +281,6 @@ export type UserDbObject = {
   about?: Maybe<string>,
   created: Date | string | number,
   email?: Maybe<string>,
-  _id: ObjectId,
+  _id: string,
   karma: number,
 };

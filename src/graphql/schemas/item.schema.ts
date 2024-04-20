@@ -24,6 +24,6 @@ export const ItemSchema = gql`
   }
 
   extend type User {
-    submissions: [Item!]!
+    submissions: [Item!]
   }
 `;

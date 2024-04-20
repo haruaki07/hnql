@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const UserSchema = gql`
   type User @entity {
-    id: ID! @id
+    id: String! @column @map(path: "_id")
     karma: Int! @column
     about: String @column
     email: String @column

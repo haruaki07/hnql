@@ -24,6 +24,11 @@ export type AdditionalEntityFields = {
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type ChangePasswordInput = {
+  new_password: Scalars['String']['input'];
+  old_password: Scalars['String']['input'];
+};
+
 export type Credentials = {
   __typename?: 'Credentials';
   access_token: Scalars['String']['output'];
@@ -54,8 +59,15 @@ export enum ItemType {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePassword: Scalars['Boolean']['output'];
   signIn: Credentials;
   signUp: Scalars['String']['output'];
+  updateProfile: User;
+};
+
+
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
 };
 
 
@@ -66,6 +78,11 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput;
+};
+
+
+export type MutationUpdateProfileArgs = {
+  input: UpdateProfileInput;
 };
 
 export type Query = {
@@ -89,12 +106,17 @@ export type SignUpInput = {
   password: Scalars['String']['input'];
 };
 
+export type UpdateProfileInput = {
+  about?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type User = {
   __typename?: 'User';
   about?: Maybe<Scalars['String']['output']>;
   created: Scalars['Timestamp']['output'];
   email?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   karma: Scalars['Int']['output'];
   submissions?: Maybe<Array<Item>>;
 };
@@ -173,35 +195,39 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  ChangePasswordInput: ChangePasswordInput;
   Credentials: ResolverTypeWrapper<Credentials>;
   Item: ResolverTypeWrapper<Item>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ItemType: ItemType;
   Mutation: ResolverTypeWrapper<{}>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Query: ResolverTypeWrapper<{}>;
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
+  UpdateProfileInput: UpdateProfileInput;
   User: ResolverTypeWrapper<User>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: Scalars['String']['output'];
+  ChangePasswordInput: ChangePasswordInput;
   Credentials: Credentials;
   Item: Item;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
+  Boolean: Scalars['Boolean']['output'];
   Query: {};
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
   Timestamp: Scalars['Timestamp']['output'];
+  UpdateProfileInput: UpdateProfileInput;
   User: User;
-  Boolean: Scalars['Boolean']['output'];
 }>;
 
 export type AbstractEntityDirectiveArgs = {
@@ -273,8 +299,10 @@ export type ItemResolvers<ContextType = Context, ParentType extends ResolversPar
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'input'>>;
   signIn?: Resolver<ResolversTypes['Credentials'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
+  updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
@@ -290,7 +318,7 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
   about?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   created?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   karma?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   submissions?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

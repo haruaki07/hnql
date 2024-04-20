@@ -44,4 +44,15 @@ export class UserRepository {
       throw e;
     }
   }
+
+  async updateUser(id: string, newUser: Partial<UserDbObject>) {
+    const { acknowledged, modifiedCount } =
+      await this.getCollection().updateOne({ _id: id }, { $set: newUser });
+
+    if (!acknowledged) {
+      throw new Error("could not update profile");
+    }
+
+    return modifiedCount;
+  }
 }

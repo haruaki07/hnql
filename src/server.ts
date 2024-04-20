@@ -1,3 +1,4 @@
+import "reflect-metadata/lite";
 import "dotenv/config";
 
 import { ApolloServer } from "@apollo/server";
@@ -9,6 +10,8 @@ import http from "node:http";
 import { config } from "./config";
 import { Context } from "./graphql/context";
 import schema from "./graphql/schema";
+import container from "./container";
+import { TYPES } from "./container/types";
 
 async function main() {
   const app = express();
@@ -22,12 +25,16 @@ async function main() {
 
   await server.start();
 
+  const context = container.get<Context>(TYPES.Context);
+
   app.use(
     "/graphql",
     cors<cors.CorsRequest>(),
     express.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({ token: req.headers.token }),
+      context: async ({ req }) => {
+        return { ...context };
+      },
     })
   );
 

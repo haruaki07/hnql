@@ -1,4 +1,4 @@
-import { Resolvers } from "@/generated/types";
+import { Resolvers, User } from "@/generated/types";
 
 export const UserResolvers: Resolvers = {
   Query: {
@@ -7,7 +7,12 @@ export const UserResolvers: Resolvers = {
         id,
         created: new Date(),
         karma: 1,
-      };
+      } as User;
+    },
+  },
+  User: {
+    submissions: async (_) => {
+      return [];
     },
   },
 };

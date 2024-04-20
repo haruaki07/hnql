@@ -1,5 +1,7 @@
 import { User } from "@/generated/types";
+import { injectable } from "inversify";
 
-export interface Context {
-  user?: User;
+@injectable()
+export class Context {
+  public user?: User;
 }

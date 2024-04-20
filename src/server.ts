@@ -12,6 +12,8 @@ import { Context } from "./graphql/context";
 import schema from "./graphql/schema";
 import container from "./container";
 import { TYPES } from "./container/types";
+import { DbConnection } from "./data/common/db-connection";
+import { Logger } from "./data/common/logger";
 
 async function main() {
   const app = express();
@@ -26,6 +28,8 @@ async function main() {
   await server.start();
 
   const context = container.get<Context>(TYPES.Context);
+  const dbConnection = container.get<DbConnection>(TYPES.DbConnetion);
+  const logger = container.get<Logger>(TYPES.Logger);
 
   app.use(
     "/graphql",
@@ -38,10 +42,13 @@ async function main() {
     })
   );
 
+  await dbConnection.connect();
+  logger.log("Connected to MongoDB");
+
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: config.port }, resolve)
   );
-  console.log(`🚀 Server ready at http://localhost:${config.port}/`);
+  logger.log(`Server ready at http://localhost:${config.port}/`);
 }
 
 main().catch((e) => console.error(e));

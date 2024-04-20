@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec cross-env NODE_ENV=development ts-node src/server.ts -e ts,graphql -w src",
-    "build": "npm run gen && tsc",
+    "clean-build": "node -e \"require('fs').rmSync('dist', { force: true, recursive: true })\"",
+    "build": "npm run clean-build && npm run gen && tsc",
     "start": "node dist/server.js",
     "gen": "gql-gen"
   },

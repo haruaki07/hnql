@@ -15,6 +15,7 @@ const config: CodegenConfig = {
       plugins: ["typescript", "typescript-resolvers", "typescript-mongodb"],
       config: {
         useIndexSignature: true,
+        contextType: "@/graphql/context#Context",
       },
     },
   },

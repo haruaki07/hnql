@@ -7,18 +7,15 @@ import cors from "cors";
 import express from "express";
 import http from "node:http";
 import { config } from "./config";
+import { Context } from "./graphql/context";
 import schema from "./graphql/schema";
-
-interface MyContext {
-  token?: string;
-}
 
 async function main() {
   const app = express();
 
   const httpServer = http.createServer(app);
 
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer<Context>({
     schema,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });

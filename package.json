@@ -17,6 +17,7 @@
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-resolvers": "^4.0.6",
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.7",
     "cross-env": "^7.0.3",
     "nodemon": "^3.1.0",
@@ -28,6 +29,7 @@
     "@apollo/server": "^4.10.4",
     "@graphql-codegen/typescript-mongodb": "^3.0.0",
     "@graphql-tools/schema": "^10.0.3",
+    "argon2": "^0.40.1",
     "console-stamp": "^3.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -35,6 +37,7 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "inversify": "^6.0.2",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.5.0",
     "reflect-metadata": "^0.2.2"
   }

@@ -2,6 +2,7 @@ import { TYPES } from "@/container/types";
 import { DbConnection } from "@/data/common/db-connection";
 import { UserDbObject } from "@/generated/types";
 import { inject, injectable } from "inversify";
+import { MongoError } from "mongodb";
 
 @injectable()
 export class UserRepository {
@@ -22,5 +23,25 @@ export class UserRepository {
     }
 
     return user;
+  }
+
+  async insertUser(user: Omit<UserDbObject, "about" | "email">) {
+    try {
+      const { acknowledged, insertedId } = await this.getCollection().insertOne(
+        user
+      );
+
+      if (!acknowledged) {
+        throw new Error("could not create user");
+      }
+
+      return insertedId;
+    } catch (e) {
+      if (e instanceof MongoError && e.code == "11000") {
+        throw new Error("user already exists");
+      }
+
+      throw e;
+    }
   }
 }

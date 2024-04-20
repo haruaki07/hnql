@@ -1,12 +1,18 @@
 import { TYPES } from "@/container/types";
 import { User } from "@/generated/types";
-import { UserService } from "@/services";
+import { AuthService, UserService } from "@/services";
+import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 @injectable()
 export class Context {
-  public user?: User;
+  public req!: Request;
+  public res!: Response;
+  public userId?: User["id"];
 
   @inject(TYPES.UserService)
   public readonly userService!: UserService;
+
+  @inject(TYPES.AuthService)
+  public readonly authService!: AuthService;
 }

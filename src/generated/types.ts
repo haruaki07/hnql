@@ -24,6 +24,11 @@ export type AdditionalEntityFields = {
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Credentials = {
+  __typename?: 'Credentials';
+  access_token: Scalars['String']['output'];
+};
+
 export type Item = {
   __typename?: 'Item';
   by: Scalars['ID']['output'];
@@ -47,14 +52,41 @@ export enum ItemType {
   Story = 'STORY'
 }
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  signIn: Credentials;
+  signUp: Scalars['String']['output'];
+};
+
+
+export type MutationSignInArgs = {
+  input: SignInInput;
+};
+
+
+export type MutationSignUpArgs = {
+  input: SignUpInput;
+};
+
 export type Query = {
   __typename?: 'Query';
+  me: User;
   user: User;
 };
 
 
 export type QueryUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type SignInInput = {
+  id: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type SignUpInput = {
+  id: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type User = {
@@ -141,11 +173,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Credentials: ResolverTypeWrapper<Credentials>;
   Item: ResolverTypeWrapper<Item>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ItemType: ItemType;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
+  SignInInput: SignInInput;
+  SignUpInput: SignUpInput;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   User: ResolverTypeWrapper<User>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -155,10 +191,14 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: Scalars['String']['output'];
+  Credentials: Credentials;
   Item: Item;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  Mutation: {};
   Query: {};
+  SignInInput: SignInInput;
+  SignUpInput: SignUpInput;
   Timestamp: Scalars['Timestamp']['output'];
   User: User;
   Boolean: Scalars['Boolean']['output'];
@@ -211,6 +251,11 @@ export type UnionDirectiveArgs = {
 
 export type UnionDirectiveResolver<Result, Parent, ContextType = Context, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type CredentialsResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Credentials'] = ResolversParentTypes['Credentials']> = ResolversObject<{
+  access_token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ItemResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = ResolversObject<{
   by?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   descendants?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -227,7 +272,13 @@ export type ItemResolvers<ContextType = Context, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  signIn?: Resolver<ResolversTypes['Credentials'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
+  signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
+}>;
+
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 }>;
 
@@ -246,7 +297,9 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  Credentials?: CredentialsResolvers<ContextType>;
   Item?: ItemResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Timestamp?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
@@ -283,4 +336,5 @@ export type UserDbObject = {
   email?: Maybe<string>,
   _id: string,
   karma: number,
+  password: string,
 };

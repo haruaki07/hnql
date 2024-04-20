@@ -4,7 +4,7 @@ import { Context } from "@/graphql/context";
 import { DbConnection } from "@/data/common/db-connection";
 import { Logger, createLogger } from "@/data/common/logger";
 import { UserRepository } from "@/repositories";
-import { UserService } from "@/services";
+import { AuthService, UserService } from "@/services";
 
 const container = new Container();
 
@@ -16,6 +16,7 @@ container.bind<Logger>(TYPES.Logger).toDynamicValue((_ctx) => {
 
 container.bind<UserRepository>(TYPES.UserRepository).to(UserRepository);
 
+container.bind<AuthService>(TYPES.AuthService).to(AuthService);
 container.bind<UserService>(TYPES.UserService).to(UserService);
 
 export default container;

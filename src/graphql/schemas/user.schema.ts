@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const UserSchema = gql`
-  type User @entity {
+  type User @entity(additionalFields: [{ path: "password", type: "string" }]) {
     id: String! @column @map(path: "_id")
     karma: Int! @column
     about: String @column

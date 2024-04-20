@@ -4,6 +4,7 @@ import { UserSchema } from "./schemas/user.schema";
 import { UserResolvers } from "./resolvers/user.resolver";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import TimestampType from "./scalars/timestamp";
+import { ItemSchema } from "./schemas/item.schema";
 
 const BaseSchema = gql`
   type Query
@@ -14,6 +15,6 @@ const BaseSchema = gql`
 const BaseResolver = { Timestamp: TimestampType };
 
 export default makeExecutableSchema({
-  typeDefs: [DIRECTIVES, BaseSchema, UserSchema],
+  typeDefs: [DIRECTIVES, BaseSchema, UserSchema, ItemSchema],
   resolvers: [BaseResolver, UserResolvers],
 });

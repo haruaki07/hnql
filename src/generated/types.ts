@@ -24,6 +24,29 @@ export type AdditionalEntityFields = {
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Item = {
+  __typename?: 'Item';
+  by: Scalars['ID']['output'];
+  descendants?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['ID']['output'];
+  kids?: Maybe<Array<Item>>;
+  parent?: Maybe<Item>;
+  parts?: Maybe<Array<Item>>;
+  poll?: Maybe<Item>;
+  text: Scalars['String']['output'];
+  time?: Maybe<Scalars['Timestamp']['output']>;
+  title: Scalars['String']['output'];
+  type: ItemType;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+export enum ItemType {
+  Comment = 'COMMENT',
+  Poll = 'POLL',
+  Pollopt = 'POLLOPT',
+  Story = 'STORY'
+}
+
 export type Query = {
   __typename?: 'Query';
   user: User;
@@ -41,6 +64,7 @@ export type User = {
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   karma: Scalars['Int']['output'];
+  submissions: Array<Item>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -117,11 +141,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  Query: ResolverTypeWrapper<{}>;
+  Item: ResolverTypeWrapper<Item>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  ItemType: ItemType;
+  Query: ResolverTypeWrapper<{}>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   User: ResolverTypeWrapper<User>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
@@ -129,11 +155,12 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   AdditionalEntityFields: AdditionalEntityFields;
   String: Scalars['String']['output'];
-  Query: {};
+  Item: Item;
   ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
+  Query: {};
   Timestamp: Scalars['Timestamp']['output'];
   User: User;
-  Int: Scalars['Int']['output'];
   Boolean: Scalars['Boolean']['output'];
 }>;
 
@@ -184,6 +211,22 @@ export type UnionDirectiveArgs = {
 
 export type UnionDirectiveResolver<Result, Parent, ContextType = Context, Args = UnionDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type ItemResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = ResolversObject<{
+  by?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  descendants?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  kids?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
+  parent?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;
+  parts?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
+  poll?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  time?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 }>;
@@ -198,10 +241,12 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   karma?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  submissions?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  Item?: ItemResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Timestamp?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
@@ -219,6 +264,19 @@ export type DirectiveResolvers<ContextType = Context> = ResolversObject<{
 }>;
 
 import { ObjectId } from 'mongodb';
+export type ItemDbObject = {
+  by: string,
+  descendants?: Maybe<number>,
+  _id: ObjectId,
+  parent?: Maybe<ItemDbObject['_id']>,
+  poll?: Maybe<ItemDbObject['_id']>,
+  text: string,
+  time?: Maybe<Date | string | number>,
+  title: string,
+  type: string,
+  url?: Maybe<string>,
+};
+
 export type UserDbObject = {
   about?: Maybe<string>,
   created: Date | string | number,

@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec cross-env NODE_ENV=development ts-node src/server.ts -e ts,graphql -w src",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "build": "npm run gen && tsc",
+    "start": "node dist/server.js",
+    "gen": "gql-gen"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-resolvers": "^4.0.6",
     "@types/cors": "^2.8.17",
     "@types/node": "^20.12.7",
     "cross-env": "^7.0.3",
@@ -22,6 +26,8 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",
+    "@graphql-codegen/typescript-mongodb": "^3.0.0",
+    "@graphql-tools/schema": "^10.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

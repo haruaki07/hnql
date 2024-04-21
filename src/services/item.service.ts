@@ -26,6 +26,7 @@ export class ItemService {
       title: input.title,
       text: input.text,
       url: input.url,
+      time: new Date(),
     };
 
     const itemId = await this._itemRepo.insertItem(newItem);

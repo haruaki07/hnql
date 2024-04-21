@@ -5,6 +5,8 @@ import { DbConnection } from "@/data/common/db-connection";
 import { Logger, createLogger } from "@/data/common/logger";
 import { UserRepository } from "@/repositories";
 import { AuthService, UserService } from "@/services";
+import { ItemRepository } from "@/repositories/item.repository";
+import { ItemService } from "@/services/item.service";
 
 const container = new Container();
 
@@ -15,8 +17,10 @@ container.bind<Logger>(TYPES.Logger).toDynamicValue((_ctx) => {
 });
 
 container.bind<UserRepository>(TYPES.UserRepository).to(UserRepository);
+container.bind<ItemRepository>(TYPES.ItemRepository).to(ItemRepository);
 
 container.bind<AuthService>(TYPES.AuthService).to(AuthService);
 container.bind<UserService>(TYPES.UserService).to(UserService);
+container.bind<ItemService>(TYPES.ItemService).to(ItemService);
 
 export default container;

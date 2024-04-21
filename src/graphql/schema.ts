@@ -8,6 +8,7 @@ import TimestampType from "./scalars/timestamp";
 import { AuthSchema } from "./schemas/auth.schema";
 import { ItemSchema } from "./schemas/item.schema";
 import { UserSchema } from "./schemas/user.schema";
+import { ItemResolver } from "./resolvers/item.resolver";
 
 const BaseSchema = gql`
   type Query
@@ -20,5 +21,5 @@ const BaseResolver: Resolvers = { Timestamp: TimestampType };
 
 export default makeExecutableSchema({
   typeDefs: [DIRECTIVES, BaseSchema, AuthSchema, UserSchema, ItemSchema],
-  resolvers: [BaseResolver, AuthResolver, UserResolvers],
+  resolvers: [BaseResolver, AuthResolver, UserResolvers, ItemResolver],
 });

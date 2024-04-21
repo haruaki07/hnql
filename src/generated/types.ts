@@ -62,6 +62,7 @@ export type Mutation = {
   changePassword: Scalars['Boolean']['output'];
   signIn: Credentials;
   signUp: Scalars['String']['output'];
+  submitItem: Item;
   updateProfile: User;
 };
 
@@ -78,6 +79,11 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput;
+};
+
+
+export type MutationSubmitItemArgs = {
+  input: SubmitItemInput;
 };
 
 
@@ -104,6 +110,12 @@ export type SignInInput = {
 export type SignUpInput = {
   id: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type SubmitItemInput = {
+  text: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateProfileInput = {
@@ -206,6 +218,7 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
+  SubmitItemInput: SubmitItemInput;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   UpdateProfileInput: UpdateProfileInput;
   User: ResolverTypeWrapper<User>;
@@ -225,6 +238,7 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
+  SubmitItemInput: SubmitItemInput;
   Timestamp: Scalars['Timestamp']['output'];
   UpdateProfileInput: UpdateProfileInput;
   User: User;
@@ -302,6 +316,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'input'>>;
   signIn?: Resolver<ResolversTypes['Credentials'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
+  submitItem?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitItemArgs, 'input'>>;
   updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
 }>;
 

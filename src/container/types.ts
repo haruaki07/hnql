@@ -4,7 +4,9 @@ export const TYPES = {
   Logger: Symbol("Logger"),
 
   UserRepository: Symbol("UserRepository"),
+  ItemRepository: Symbol("ItemRepository"),
 
   AuthService: Symbol("AuthService"),
   UserService: Symbol("UserService"),
+  ItemService: Symbol("ItemService"),
 };

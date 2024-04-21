@@ -23,7 +23,17 @@ export const ItemSchema = gql`
     descendants: Int @column
   }
 
+  input SubmitItemInput {
+    title: String!
+    text: String!
+    url: String
+  }
+
   extend type User {
     submissions: [Item!]
+  }
+
+  extend type Mutation {
+    submitItem(input: SubmitItemInput!): Item!
   }
 `;

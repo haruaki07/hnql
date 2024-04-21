@@ -94,7 +94,13 @@ export type MutationUpdateProfileArgs = {
 export type Query = {
   __typename?: 'Query';
   me: User;
+  news: Array<Item>;
   user: User;
+};
+
+
+export type QueryNewsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -322,6 +328,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  news?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, Partial<QueryNewsArgs>>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
 }>;
 

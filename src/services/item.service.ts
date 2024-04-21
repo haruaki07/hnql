@@ -38,4 +38,17 @@ export class ItemService {
       id: itemId.toString(),
     };
   }
+
+  async getNewsItem(limit: number): Promise<Item[]> {
+    const items = await this._itemRepo.getItems(limit);
+
+    return items.map((item) => ({
+      id: item._id.toString(),
+      ...item,
+      type: item.type as ItemType,
+      kids: null,
+      parent: null,
+      poll: null,
+    }));
+  }
 }

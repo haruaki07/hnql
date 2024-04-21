@@ -33,6 +33,10 @@ export const ItemSchema = gql`
     submissions: [Item!]
   }
 
+  extend type Query {
+    news(limit: Int): [Item!]!
+  }
+
   extend type Mutation {
     submitItem(input: SubmitItemInput!): Item!
   }

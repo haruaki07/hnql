@@ -25,6 +25,16 @@ export class ItemRepository {
     return item;
   }
 
+  async getItems(limit: number = 30) {
+    const items = await this.getCollection()
+      .find({})
+      .sort({ time: -1 })
+      .limit(limit)
+      .toArray();
+
+    return items;
+  }
+
   async insertItem(item: Omit<ItemDbObject, "_id">) {
     const { acknowledged, insertedId } = await this.getCollection().insertOne(
       item as ItemDbObject

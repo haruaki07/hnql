@@ -48,5 +48,6 @@ export const ItemSchema = gql`
   extend type Mutation {
     submitItem(input: SubmitItemInput!): Item!
     upvoteItem(itemId: ID!): Int!
+    unvoteItem(itemId: ID!): Int!
   }
 `;

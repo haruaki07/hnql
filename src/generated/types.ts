@@ -72,6 +72,7 @@ export type Mutation = {
   signIn: Credentials;
   signUp: Scalars['String']['output'];
   submitItem: Item;
+  unvoteItem: Scalars['Int']['output'];
   updateProfile: User;
   upvoteItem: Scalars['Int']['output'];
 };
@@ -94,6 +95,11 @@ export type MutationSignUpArgs = {
 
 export type MutationSubmitItemArgs = {
   input: SubmitItemInput;
+};
+
+
+export type MutationUnvoteItemArgs = {
+  itemId: Scalars['ID']['input'];
 };
 
 
@@ -349,6 +355,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   signIn?: Resolver<ResolversTypes['Credentials'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   submitItem?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitItemArgs, 'input'>>;
+  unvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUnvoteItemArgs, 'itemId'>>;
   updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
   upvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpvoteItemArgs, 'itemId'>>;
 }>;

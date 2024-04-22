@@ -63,4 +63,10 @@ export class ItemService {
   async getItemScores(itemId: string): Promise<number> {
     return await this._itemRepo.countItemScore(itemId);
   }
+
+  async unvoteItem(userId: string, itemId: string): Promise<number> {
+    await this._itemRepo.deleteItemScore(userId, itemId);
+
+    return await this._itemRepo.countItemScore(itemId);
+  }
 }

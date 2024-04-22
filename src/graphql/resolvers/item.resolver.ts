@@ -21,6 +21,13 @@ export const ItemResolver: Resolvers = {
 
       return await itemService.upvoteItem(userId, itemId);
     },
+    unvoteItem: async (_, { itemId }, { userId, itemService }) => {
+      if (!userId) {
+        throw new Error("unauthorized");
+      }
+
+      return await itemService.unvoteItem(userId, itemId);
+    },
   },
 
   Item: {

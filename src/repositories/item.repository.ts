@@ -82,4 +82,24 @@ export class ItemRepository {
 
     return count;
   }
+
+  async deleteItemScore(userId: string, itemId: string) {
+    const score = await this.getScoreCollection().findOne({
+      by: userId,
+      item: new ObjectId(itemId),
+    });
+    if (!score) {
+      throw new Error("item is not voted");
+    }
+
+    const { acknowledged } = await this.getScoreCollection().deleteOne({
+      _id: score._id,
+    });
+
+    if (!acknowledged) {
+      throw new Error("could not unvote item");
+    }
+
+    return true;
+  }
 }

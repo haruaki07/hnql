@@ -21,6 +21,14 @@ export const ItemSchema = gql`
     kids: [Item!]
     parts: [Item!]
     descendants: Int @column
+    score: Int!
+  }
+
+  type ItemScore @entity {
+    id: ID! @id
+    by: ID! @column
+    item: Item! @link
+    time: Timestamp! @column
   }
 
   input SubmitItemInput {
@@ -39,5 +47,6 @@ export const ItemSchema = gql`
 
   extend type Mutation {
     submitItem(input: SubmitItemInput!): Item!
+    upvoteItem(itemId: ID!): Int!
   }
 `;

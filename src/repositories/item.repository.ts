@@ -1,6 +1,6 @@
 import { TYPES } from "@/container/types";
 import { DbConnection } from "@/data/common/db-connection";
-import { ItemDbObject } from "@/generated/types";
+import { ItemDbObject, ItemScoreDbObject } from "@/generated/types";
 import { inject, injectable } from "inversify";
 import { ObjectId } from "mongodb";
 
@@ -13,6 +13,10 @@ export class ItemRepository {
 
   private getCollection() {
     return this._dbConn.db.collection<ItemDbObject>("items");
+  }
+
+  private getScoreCollection() {
+    return this._dbConn.db.collection<ItemScoreDbObject>("item_scores");
   }
 
   async getItemById(id: string) {
@@ -45,5 +49,37 @@ export class ItemRepository {
     }
 
     return insertedId;
+  }
+
+  async addItemScore(userId: string, itemId: string) {
+    const count = await this.getScoreCollection().countDocuments({
+      by: userId,
+      item: new ObjectId(itemId),
+    });
+    if (count > 0) {
+      throw new Error("user already voted");
+    }
+
+    const { acknowledged, insertedId } =
+      await this.getScoreCollection().insertOne({
+        _id: new ObjectId(),
+        by: userId,
+        item: new ObjectId(itemId),
+        time: new Date(),
+      });
+
+    if (!acknowledged) {
+      throw new Error("could not add item score");
+    }
+
+    return insertedId;
+  }
+
+  async countItemScore(itemId: string) {
+    const count = await this.getScoreCollection().countDocuments({
+      item: new ObjectId(itemId),
+    });
+
+    return count;
   }
 }

@@ -14,5 +14,18 @@ export const ItemResolver: Resolvers = {
 
       return await itemService.submitItem(userId, input, ItemType.Story);
     },
+    upvoteItem: async (_, { itemId }, { userId, itemService }) => {
+      if (!userId) {
+        throw new Error("unauthorized");
+      }
+
+      return await itemService.upvoteItem(userId, itemId);
+    },
+  },
+
+  Item: {
+    score: async ({ id }, __, { itemService }) => {
+      return await itemService.getItemScores(id);
+    },
   },
 };

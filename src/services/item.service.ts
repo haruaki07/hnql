@@ -47,9 +47,20 @@ export class ItemService {
       id: item._id.toString(),
       ...item,
       type: item.type as ItemType,
+      score: 0,
       kids: null,
       parent: null,
       poll: null,
     }));
+  }
+
+  async upvoteItem(userId: string, itemId: string): Promise<number> {
+    await this._itemRepo.addItemScore(userId, itemId);
+
+    return await this._itemRepo.countItemScore(itemId);
+  }
+
+  async getItemScores(itemId: string): Promise<number> {
+    return await this._itemRepo.countItemScore(itemId);
   }
 }

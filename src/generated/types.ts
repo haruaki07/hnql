@@ -43,11 +43,20 @@ export type Item = {
   parent?: Maybe<Item>;
   parts?: Maybe<Array<Item>>;
   poll?: Maybe<Item>;
+  score: Scalars['Int']['output'];
   text: Scalars['String']['output'];
   time?: Maybe<Scalars['Timestamp']['output']>;
   title: Scalars['String']['output'];
   type: ItemType;
   url?: Maybe<Scalars['String']['output']>;
+};
+
+export type ItemScore = {
+  __typename?: 'ItemScore';
+  by: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  item: Item;
+  time: Scalars['Timestamp']['output'];
 };
 
 export enum ItemType {
@@ -64,6 +73,7 @@ export type Mutation = {
   signUp: Scalars['String']['output'];
   submitItem: Item;
   updateProfile: User;
+  upvoteItem: Scalars['Int']['output'];
 };
 
 
@@ -89,6 +99,11 @@ export type MutationSubmitItemArgs = {
 
 export type MutationUpdateProfileArgs = {
   input: UpdateProfileInput;
+};
+
+
+export type MutationUpvoteItemArgs = {
+  itemId: Scalars['ID']['input'];
 };
 
 export type Query = {
@@ -218,6 +233,7 @@ export type ResolversTypes = ResolversObject<{
   Item: ResolverTypeWrapper<Item>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  ItemScore: ResolverTypeWrapper<ItemScore>;
   ItemType: ItemType;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -239,6 +255,7 @@ export type ResolversParentTypes = ResolversObject<{
   Item: Item;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  ItemScore: ItemScore;
   Mutation: {};
   Boolean: Scalars['Boolean']['output'];
   Query: {};
@@ -310,11 +327,20 @@ export type ItemResolvers<ContextType = Context, ParentType extends ResolversPar
   parent?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
   poll?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;
+  score?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   time?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ItemScoreResolvers<ContextType = Context, ParentType extends ResolversParentTypes['ItemScore'] = ResolversParentTypes['ItemScore']> = ResolversObject<{
+  by?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  item?: Resolver<ResolversTypes['Item'], ParentType, ContextType>;
+  time?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -324,6 +350,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   submitItem?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitItemArgs, 'input'>>;
   updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
+  upvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpvoteItemArgs, 'itemId'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
@@ -349,6 +376,7 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Credentials?: CredentialsResolvers<ContextType>;
   Item?: ItemResolvers<ContextType>;
+  ItemScore?: ItemScoreResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Timestamp?: GraphQLScalarType;
@@ -378,6 +406,13 @@ export type ItemDbObject = {
   title: string,
   type: string,
   url?: Maybe<string>,
+};
+
+export type ItemScoreDbObject = {
+  by: string,
+  _id: ObjectId,
+  item: ItemDbObject['_id'],
+  time: Date | string | number,
 };
 
 export type UserDbObject = {

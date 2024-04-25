@@ -43,6 +43,15 @@ export class ItemService {
     };
   }
 
+  async getItem(id: string) {
+    const item = (await this._itemRepo.getItemById(id)) as unknown as Item;
+
+    return {
+      ...item,
+      id,
+    };
+  }
+
   async getNewsItem(limit: number): Promise<Item[]> {
     const items = await this._itemRepo.getItems(limit, {
       type: { $in: [ItemType.Story, ItemType.Poll] },

@@ -120,9 +120,15 @@ export type MutationUpvoteItemArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  item: Item;
   me: User;
   news: Array<Item>;
   user: User;
+};
+
+
+export type QueryItemArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -375,6 +381,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  item?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<QueryItemArgs, 'id'>>;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   news?: Resolver<Array<ResolversTypes['Item']>, ParentType, ContextType, Partial<QueryNewsArgs>>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;

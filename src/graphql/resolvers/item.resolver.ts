@@ -2,6 +2,9 @@ import { ItemType, Resolvers } from "@/generated/types";
 
 export const ItemResolver: Resolvers = {
   Query: {
+    item: async (_, { id }, { itemService }) => {
+      return await itemService.getItem(id);
+    },
     news: async (_, { limit }, { itemService }) => {
       return await itemService.getNewsItem(limit ?? 30);
     },

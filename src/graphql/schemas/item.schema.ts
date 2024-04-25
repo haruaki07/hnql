@@ -47,6 +47,7 @@ export const ItemSchema = gql`
   }
 
   extend type Query {
+    item(id: String!): Item!
     news(limit: Int): [Item!]!
   }
 

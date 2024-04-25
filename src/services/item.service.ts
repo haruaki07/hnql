@@ -6,6 +6,7 @@ import {
   Maybe,
   SubmitCommentInput,
   SubmitItemInput,
+  SubmitPollInput,
 } from "@/generated/types";
 import { ItemRepository } from "@/repositories/item.repository";
 import { inject, injectable } from "inversify";
@@ -127,6 +128,39 @@ export class ItemService {
   async getItemKids(parentId: string, limit?: Maybe<number>): Promise<Item[]> {
     const items = await this._itemRepo.getItems(limit ?? undefined, {
       parent: new ObjectId(parentId),
+    });
+
+    return items.map(
+      (item: ItemDbObject) =>
+        ({
+          ...item,
+          id: item._id.toString(),
+        } as unknown as Item)
+    );
+  }
+
+  async submitPoll(userId: string, input: SubmitPollInput): Promise<Item> {
+    const pollId = await this._itemRepo.insertPoll(
+      userId,
+      {
+        text: input.text,
+        title: input.title,
+        url: input.url,
+      },
+      input.opts.map((opt) => opt.text)
+    );
+
+    const poll = (await this._itemRepo.getItemById(
+      pollId.toString()
+    )) as unknown as Item;
+
+    return { ...poll, id: pollId.toString() };
+  }
+
+  async getPollOpts(pollId: string): Promise<Item[]> {
+    const items = await this._itemRepo.getItems(undefined, {
+      poll: new ObjectId(pollId),
+      type: ItemType.Pollopt,
     });
 
     return items.map(

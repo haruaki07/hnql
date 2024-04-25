@@ -38,6 +38,13 @@ export const ItemResolver: Resolvers = {
 
       return await itemService.submitComment(userId, input);
     },
+    submitPoll: async (_, { input }, { userId, itemService }) => {
+      if (!userId) {
+        throw new Error("unauthorized");
+      }
+
+      return await itemService.submitPoll(userId, input);
+    },
   },
   Item: {
     score: async ({ id }, __, { itemService }) => {
@@ -55,6 +62,16 @@ export const ItemResolver: Resolvers = {
       }
 
       return await itemService.getItem(parent as unknown as string);
+    },
+    parts: async ({ id, type }, _, { itemService }) => {
+      if (type !== ItemType.Poll) return null;
+
+      return await itemService.getPollOpts(id);
+    },
+    poll: async ({ poll }, _, { itemService }) => {
+      if (!poll) return null;
+
+      return await itemService.getItem(poll as unknown as string);
     },
   },
 };

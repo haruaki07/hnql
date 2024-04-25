@@ -1,6 +1,6 @@
 import { config } from "@/config";
 import { injectable } from "inversify";
-import { Db, MongoClient } from "mongodb";
+import { Db, MongoClient, WithTransactionCallback } from "mongodb";
 
 @injectable()
 export class DbConnection {
@@ -18,5 +18,11 @@ export class DbConnection {
 
   public get db() {
     return this._db;
+  }
+
+  async $transaction<T = any>(cb: WithTransactionCallback<T>) {
+    return this._client.withSession((session) => {
+      return session.withTransaction(cb);
+    });
   }
 }

@@ -78,6 +78,7 @@ export type Mutation = {
   signUp: Scalars['String']['output'];
   submitComment: Item;
   submitItem: Item;
+  submitPoll: Item;
   unvoteItem: Scalars['Int']['output'];
   updateProfile: User;
   upvoteItem: Scalars['Int']['output'];
@@ -109,6 +110,11 @@ export type MutationSubmitItemArgs = {
 };
 
 
+export type MutationSubmitPollArgs = {
+  input: SubmitPollInput;
+};
+
+
 export type MutationUnvoteItemArgs = {
   itemId: Scalars['ID']['input'];
 };
@@ -121,6 +127,10 @@ export type MutationUpdateProfileArgs = {
 
 export type MutationUpvoteItemArgs = {
   itemId: Scalars['ID']['input'];
+};
+
+export type PollOptInput = {
+  text: Scalars['String']['input'];
 };
 
 export type Query = {
@@ -162,6 +172,13 @@ export type SubmitCommentInput = {
 };
 
 export type SubmitItemInput = {
+  text: Scalars['String']['input'];
+  title: Scalars['String']['input'];
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SubmitPollInput = {
+  opts: Array<PollOptInput>;
   text: Scalars['String']['input'];
   title: Scalars['String']['input'];
   url?: InputMaybe<Scalars['String']['input']>;
@@ -265,11 +282,13 @@ export type ResolversTypes = ResolversObject<{
   ItemType: ItemType;
   Mutation: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  PollOptInput: PollOptInput;
   Query: ResolverTypeWrapper<{}>;
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
   SubmitCommentInput: SubmitCommentInput;
   SubmitItemInput: SubmitItemInput;
+  SubmitPollInput: SubmitPollInput;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   UpdateProfileInput: UpdateProfileInput;
   User: ResolverTypeWrapper<User>;
@@ -287,11 +306,13 @@ export type ResolversParentTypes = ResolversObject<{
   ItemScore: ItemScore;
   Mutation: {};
   Boolean: Scalars['Boolean']['output'];
+  PollOptInput: PollOptInput;
   Query: {};
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
   SubmitCommentInput: SubmitCommentInput;
   SubmitItemInput: SubmitItemInput;
+  SubmitPollInput: SubmitPollInput;
   Timestamp: Scalars['Timestamp']['output'];
   UpdateProfileInput: UpdateProfileInput;
   User: User;
@@ -380,6 +401,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
   submitComment?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitCommentArgs, 'input'>>;
   submitItem?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitItemArgs, 'input'>>;
+  submitPoll?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitPollArgs, 'input'>>;
   unvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUnvoteItemArgs, 'itemId'>>;
   updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
   upvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUpvoteItemArgs, 'itemId'>>;

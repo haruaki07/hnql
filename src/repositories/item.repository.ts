@@ -1,6 +1,6 @@
 import { TYPES } from "@/container/types";
 import { DbConnection } from "@/data/common/db-connection";
-import { ItemDbObject, ItemScoreDbObject } from "@/generated/types";
+import { ItemDbObject, ItemScoreDbObject, ItemType } from "@/generated/types";
 import { inject, injectable } from "inversify";
 import { Filter, ObjectId, Sort } from "mongodb";
 
@@ -104,5 +104,44 @@ export class ItemRepository {
     }
 
     return true;
+  }
+
+  async insertPoll(
+    userId: string,
+    item: Pick<ItemDbObject, "title" | "text" | "url">,
+    opts: string[]
+  ) {
+    return await this._dbConn.$transaction(async () => {
+      const { acknowledged, insertedId } = await this.getCollection().insertOne(
+        {
+          _id: new ObjectId(),
+          ...item,
+          by: userId,
+          time: new Date(),
+          type: ItemType.Poll,
+        }
+      );
+
+      if (!acknowledged) {
+        throw new Error("could not create poll");
+      }
+
+      const { acknowledged: ack } = await this.getCollection().insertMany(
+        opts.map((opt) => ({
+          _id: new ObjectId(),
+          by: userId,
+          text: opt,
+          type: ItemType.Pollopt,
+          time: new Date(),
+          poll: insertedId,
+        }))
+      );
+
+      if (!ack) {
+        throw new Error("could not create poll");
+      }
+
+      return insertedId;
+    });
   }
 }

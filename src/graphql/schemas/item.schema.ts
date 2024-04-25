@@ -42,6 +42,17 @@ export const ItemSchema = gql`
     parent: String!
   }
 
+  input PollOptInput {
+    text: String!
+  }
+
+  input SubmitPollInput {
+    title: String!
+    text: String!
+    url: String
+    opts: [PollOptInput!]!
+  }
+
   extend type User {
     submissions: [Item!]
   }
@@ -54,6 +65,7 @@ export const ItemSchema = gql`
   extend type Mutation {
     submitItem(input: SubmitItemInput!): Item!
     submitComment(input: SubmitCommentInput!): Item!
+    submitPoll(input: SubmitPollInput!): Item!
     upvoteItem(itemId: ID!): Int!
     unvoteItem(itemId: ID!): Int!
   }

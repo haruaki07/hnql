@@ -49,5 +49,12 @@ export const ItemResolver: Resolvers = {
     kids: async ({ id }, { limit }, { itemService }) => {
       return await itemService.getItemKids(id, limit);
     },
+    parent: async ({ parent }, _, { itemService }) => {
+      if (!parent) {
+        return null;
+      }
+
+      return await itemService.getItem(parent as unknown as string);
+    },
   },
 };

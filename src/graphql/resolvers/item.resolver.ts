@@ -28,6 +28,13 @@ export const ItemResolver: Resolvers = {
 
       return await itemService.unvoteItem(userId, itemId);
     },
+    submitComment: async (_, { input }, { userId, itemService }) => {
+      if (!userId) {
+        throw new Error("unauthorized");
+      }
+
+      return await itemService.submitComment(userId, input);
+    },
   },
 
   Item: {

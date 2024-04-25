@@ -46,7 +46,7 @@ export type Item = {
   score: Scalars['Int']['output'];
   text: Scalars['String']['output'];
   time?: Maybe<Scalars['Timestamp']['output']>;
-  title: Scalars['String']['output'];
+  title?: Maybe<Scalars['String']['output']>;
   type: ItemType;
   url?: Maybe<Scalars['String']['output']>;
 };
@@ -71,6 +71,7 @@ export type Mutation = {
   changePassword: Scalars['Boolean']['output'];
   signIn: Credentials;
   signUp: Scalars['String']['output'];
+  submitComment: Item;
   submitItem: Item;
   unvoteItem: Scalars['Int']['output'];
   updateProfile: User;
@@ -90,6 +91,11 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput;
+};
+
+
+export type MutationSubmitCommentArgs = {
+  input: SubmitCommentInput;
 };
 
 
@@ -137,6 +143,11 @@ export type SignInInput = {
 export type SignUpInput = {
   id: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+export type SubmitCommentInput = {
+  parent: Scalars['String']['input'];
+  text: Scalars['String']['input'];
 };
 
 export type SubmitItemInput = {
@@ -246,6 +257,7 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
+  SubmitCommentInput: SubmitCommentInput;
   SubmitItemInput: SubmitItemInput;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   UpdateProfileInput: UpdateProfileInput;
@@ -267,6 +279,7 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   SignInInput: SignInInput;
   SignUpInput: SignUpInput;
+  SubmitCommentInput: SubmitCommentInput;
   SubmitItemInput: SubmitItemInput;
   Timestamp: Scalars['Timestamp']['output'];
   UpdateProfileInput: UpdateProfileInput;
@@ -336,7 +349,7 @@ export type ItemResolvers<ContextType = Context, ParentType extends ResolversPar
   score?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   time?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -354,6 +367,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   changePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'input'>>;
   signIn?: Resolver<ResolversTypes['Credentials'], ParentType, ContextType, RequireFields<MutationSignInArgs, 'input'>>;
   signUp?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationSignUpArgs, 'input'>>;
+  submitComment?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitCommentArgs, 'input'>>;
   submitItem?: Resolver<ResolversTypes['Item'], ParentType, ContextType, RequireFields<MutationSubmitItemArgs, 'input'>>;
   unvoteItem?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationUnvoteItemArgs, 'itemId'>>;
   updateProfile?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'input'>>;
@@ -410,7 +424,7 @@ export type ItemDbObject = {
   poll?: Maybe<ItemDbObject['_id']>,
   text: string,
   time?: Maybe<Date | string | number>,
-  title: string,
+  title?: Maybe<string>,
   type: string,
   url?: Maybe<string>,
 };

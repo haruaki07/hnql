@@ -3,10 +3,12 @@ import {
   Item,
   ItemDbObject,
   ItemType,
+  SubmitCommentInput,
   SubmitItemInput,
 } from "@/generated/types";
 import { ItemRepository } from "@/repositories/item.repository";
 import { inject, injectable } from "inversify";
+import { ObjectId } from "mongodb";
 
 @injectable()
 export class ItemService {
@@ -70,5 +72,33 @@ export class ItemService {
     await this._itemRepo.deleteItemScore(userId, itemId);
 
     return await this._itemRepo.countItemScore(itemId);
+  }
+
+  async submitComment(
+    userId: string,
+    input: SubmitCommentInput
+  ): Promise<Item> {
+    // this will check if parent is exists or not
+    await this._itemRepo.getItemById(input.parent);
+
+    const itemId = await this._itemRepo.insertItem({
+      by: userId,
+      text: input.text,
+      type: ItemType.Comment,
+      parent: new ObjectId(input.parent),
+      time: new Date(),
+    });
+
+    const comment = await this._itemRepo.getItemById(itemId.toString());
+
+    return {
+      ...comment,
+      id: comment._id.toString(),
+      type: comment.type as ItemType,
+      score: 0,
+      kids: null,
+      parent: null,
+      poll: null,
+    };
   }
 }

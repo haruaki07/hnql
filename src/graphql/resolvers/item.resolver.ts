@@ -39,13 +39,15 @@ export const ItemResolver: Resolvers = {
       return await itemService.submitComment(userId, input);
     },
   },
-
   Item: {
     score: async ({ id }, __, { itemService }) => {
       return await itemService.getItemScores(id);
     },
     descendants: async ({ id }, __, { itemService }) => {
       return await itemService.getItemDescendants(id);
+    },
+    kids: async ({ id }, { limit }, { itemService }) => {
+      return await itemService.getItemKids(id, limit);
     },
   },
 };

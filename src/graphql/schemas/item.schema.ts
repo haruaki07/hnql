@@ -18,7 +18,7 @@ export const ItemSchema = gql`
     time: Timestamp @column
     parent: Item @link
     poll: Item @link
-    kids: [Item!]
+    kids(limit: Int): [Item!]
     parts: [Item!]
     descendants: Int @column
     score: Int!

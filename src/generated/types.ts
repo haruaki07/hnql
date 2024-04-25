@@ -51,6 +51,11 @@ export type Item = {
   url?: Maybe<Scalars['String']['output']>;
 };
 
+
+export type ItemKidsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type ItemScore = {
   __typename?: 'ItemScore';
   by: Scalars['ID']['output'];
@@ -348,7 +353,7 @@ export type ItemResolvers<ContextType = Context, ParentType extends ResolversPar
   by?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   descendants?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  kids?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
+  kids?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType, Partial<ItemKidsArgs>>;
   parent?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;
   parts?: Resolver<Maybe<Array<ResolversTypes['Item']>>, ParentType, ContextType>;
   poll?: Resolver<Maybe<ResolversTypes['Item']>, ParentType, ContextType>;

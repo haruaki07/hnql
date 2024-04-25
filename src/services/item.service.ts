@@ -120,4 +120,21 @@ export class ItemService {
 
     return count;
   }
+
+  /**
+   * Story's comments
+   */
+  async getItemKids(parentId: string, limit?: Maybe<number>): Promise<Item[]> {
+    const items = await this._itemRepo.getItems(limit ?? undefined, {
+      parent: new ObjectId(parentId),
+    });
+
+    return items.map(
+      (item: ItemDbObject) =>
+        ({
+          ...item,
+          id: item._id.toString(),
+        } as unknown as Item)
+    );
+  }
 }

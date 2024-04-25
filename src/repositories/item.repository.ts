@@ -33,13 +33,12 @@ export class ItemRepository {
     return item;
   }
 
-  async getItems(limit: number = 30, filter: Filter<ItemDbObject> = {}) {
-    const items = await this.getCollection()
-      .find(filter)
-      .sort({ time: -1 })
-      .limit(limit)
-      .toArray();
+  async getItems(limit?: number, filter: Filter<ItemDbObject> = {}) {
+    let cursor = this.getCollection().find(filter);
 
+    if (limit) cursor.limit(limit);
+
+    const items = await cursor.sort({ time: -1 }).toArray();
     return items;
   }
 

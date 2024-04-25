@@ -41,7 +41,9 @@ export class ItemService {
   }
 
   async getNewsItem(limit: number): Promise<Item[]> {
-    const items = await this._itemRepo.getItems(limit);
+    const items = await this._itemRepo.getItems(limit, {
+      type: { $in: [ItemType.Story, ItemType.Poll] },
+    });
 
     return items.map((item) => ({
       id: item._id.toString(),

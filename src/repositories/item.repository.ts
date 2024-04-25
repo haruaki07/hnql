@@ -2,7 +2,7 @@ import { TYPES } from "@/container/types";
 import { DbConnection } from "@/data/common/db-connection";
 import { ItemDbObject, ItemScoreDbObject } from "@/generated/types";
 import { inject, injectable } from "inversify";
-import { ObjectId } from "mongodb";
+import { Filter, ObjectId, Sort } from "mongodb";
 
 @injectable()
 export class ItemRepository {
@@ -29,9 +29,9 @@ export class ItemRepository {
     return item;
   }
 
-  async getItems(limit: number = 30) {
+  async getItems(limit: number = 30, filter: Filter<ItemDbObject> = {}) {
     const items = await this.getCollection()
-      .find({})
+      .find(filter)
       .sort({ time: -1 })
       .limit(limit)
       .toArray();

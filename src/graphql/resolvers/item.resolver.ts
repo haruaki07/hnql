@@ -41,5 +41,8 @@ export const ItemResolver: Resolvers = {
     score: async ({ id }, __, { itemService }) => {
       return await itemService.getItemScores(id);
     },
+    descendants: async ({ id }, __, { itemService }) => {
+      return await itemService.getItemDescendants(id);
+    },
   },
 };

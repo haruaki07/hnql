@@ -3,6 +3,7 @@ import {
   Item,
   ItemDbObject,
   ItemType,
+  Maybe,
   SubmitCommentInput,
   SubmitItemInput,
 } from "@/generated/types";
@@ -100,5 +101,14 @@ export class ItemService {
       parent: null,
       poll: null,
     };
+  }
+
+  async getItemDescendants(parentId: string): Promise<Maybe<number>> {
+    const count = await this._itemRepo.countItems({
+      parent: new ObjectId(parentId),
+      type: { $not: { $eq: ItemType.Pollopt } },
+    });
+
+    return count;
   }
 }

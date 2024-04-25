@@ -19,6 +19,10 @@ export class ItemRepository {
     return this._dbConn.db.collection<ItemScoreDbObject>("item_scores");
   }
 
+  async countItems(filter: Filter<ItemDbObject>) {
+    return await this.getCollection().countDocuments(filter);
+  }
+
   async getItemById(id: string) {
     const item = await this.getCollection().findOne({ _id: new ObjectId(id) });
 
